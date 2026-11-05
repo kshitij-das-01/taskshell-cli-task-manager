@@ -8,5 +8,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Core Domain Library
 add_executable(taskshell_cli_task_manager main.cpp
-        task.h
-        task.cpp)
+        include/task.h
+        src/task.cpp
+        include/task_manager.h
+        src/task_manager.cpp)
