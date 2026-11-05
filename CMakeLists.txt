@@ -7,4 +7,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
 # Core Domain Library
-add_executable(taskshell_cli_task_manager main.cpp)
+add_executable(taskshell_cli_task_manager main.cpp
+        task.h
+        task.cpp)
