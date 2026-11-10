@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>TaskShell | WebAssembly</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <main class="terminal-container">
+
+        <header class="terminal-header">
+            <div class="window-controls">
+                <span class="red"></span>
+                <span class="yellow"></span>
+                <span class="green"></span>
+            </div>
+
+            <span class="terminal-title">
+                TASKSHELL - C++ WebAssembly
+            </span>
+
+            <span id="status" class="status">
+                Initializing...
+            </span>
+        </header>
+
+        <section id="terminal" class="terminal-output">
+            <div class="system-message">
+                Taskshell WebAssembly Environment
+            </div>
+
+            <div>
+                Initializing C++ runtime...
+            </div>
+        </section>
+
+        <form id="command-form" class="command-line">
+            <span class="prompt">taskshell &gt;</span>
+
+            <input
+                id="command-input"
+                type="text"
+                placeholder="Enter a command..."
+                autocomplete="off"
+                spellcheck="off"
+                disabled
+            >
+
+            <button type="submit" disabled>
+                RUN
+            </button>
+        </form>
+
+        <footer>
+            C++17 - Emscripten - WebAssembly - Embind
+        </footer>
+    </main>
+
+    <script type="module" src="app.js"></script>
+</body>
+</html>
