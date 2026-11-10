@@ -198,7 +198,7 @@ function executeCommand(command) {
                 throw new Error("Priority must be none, low, medium, or high.");
             }
 
-            if (maanger.setPriority(id, priorities[level])) {
+            if (manager.setPriority(id, priorities[level])) {
                 print(`Task #${id} priority changed to ${level}.`, "success");
             }
             else {

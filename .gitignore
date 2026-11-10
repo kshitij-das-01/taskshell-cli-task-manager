@@ -1,6 +1,7 @@
 # Build directories
 build/
 build-wasm/
+build-native/
 cmake-build-*/
 
 # CMake generated files
