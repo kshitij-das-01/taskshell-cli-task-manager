@@ -1,0 +1,51 @@
+name: TaskShell CD
+
+on:
+  workflow_run:
+    workflows:
+      - "TaskShell CI"
+    types:
+      - completed
+    branches: [main]
+
+permissions:
+  actions: read
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: github-pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    name: Deploy to Github Pages
+    runs-on: ubuntu-latest
+
+    if: github.event.workflow_run.conclusion == 'success'
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Download website artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: taskshell-web
+          path: ./site
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          run-id: '${{ github.event.workflow_run.id }}'
+
+      - name: Configure Github Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./site
+
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4

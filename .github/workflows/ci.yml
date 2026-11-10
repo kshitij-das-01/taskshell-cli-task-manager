@@ -1,0 +1,75 @@
+name: TaskShell CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  native-build:
+    name: Build Native CLI & Run Tests
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Configure native build
+        run: |
+          cmake -S . -B build-native \
+            -DBUILD_CLI_APP=ON \
+            -DBUILD_TESTS=OFF \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Compile Native CLI & Tests
+        run: |
+          cmake --build build-native --parallel 2
+
+      - name: Run Unit Tests
+        run: |
+          ctest --test-dir build-native --output-on-failure
+
+  wasm-build:
+    name: Build WebAssembly
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Emscripten
+        uses: emscripten-core/setup-emsdk@v15
+        with:
+          version: 'latest'
+
+      - name: Configure WASM build
+        run: |
+          emcmake cmake -S . -B build-wasm \
+            -DBUILD_CLI_APP=OFF \
+            -DBUILD_TESTS=OFF \
+            -DCMAKE_BUILD_TYPE=Release
+
+      - name: Compile WASM
+        run: |
+          cmake --build build-wasm \
+            --target taskshell_wasm \
+            --parallel 2
+
+      - name: Verify generated files
+        run: |
+          test -f web/task_manager.js
+          test -f web/task_manager.wasm
+
+      - name: Upload website artifact
+        if: github.event_name != 'pull_request'
+        uses: actions/upload-artifact@v4
+        with:
+          name: taskshell-web
+          path: web/
+          if-no-files-found: error
+          retention-days: 7

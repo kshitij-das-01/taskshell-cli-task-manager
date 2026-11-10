@@ -1,3 +1,22 @@
-/.idea
+# Build directories
 build/
+build-wasm/
+build-native/
+cmake-build-*/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+Makefile
+
+# Generated WebAssembly Files
+web/task_manager.js
+web/task_manager.wasm
+
+# macOS
 .DS_Store
+
+# IDE
+.vscode/
+.idea/
