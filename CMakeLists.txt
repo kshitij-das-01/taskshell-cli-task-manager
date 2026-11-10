@@ -27,6 +27,25 @@ if (BUILD_CLI_APP)
     target_link_libraries(taskshell_cli PRIVATE task_manager)
 endif()
 
+# Native CLI Tests
+if (BUILD_TESTS AND NOT EMSCRIPTEN)
+    enable_testing()
+
+    add_executable(task_manager_tests
+        test/task_manager_tests.cpp
+    )
+
+    target_link_libraries(task_manager_tests PRIVATE
+        task_manager
+    )
+
+    add_test(
+        NAME TaskManagerTests
+        COMMAND task_manager_tests
+    )
+
+endif()
+
 # WASM Build (only active under emcmake)
 if (EMSCRIPTEN)
     add_executable(taskshell_wasm

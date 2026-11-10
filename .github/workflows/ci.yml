@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   native-build:
-    name: Build Native CLI
+    name: Build Native CLI & Run Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -26,9 +26,13 @@ jobs:
             -DBUILD_TESTS=OFF \
             -DCMAKE_BUILD_TYPE=Release
 
-      - name: Compile Native CLI
+      - name: Compile Native CLI & Tests
         run: |
           cmake --build build-native --parallel 2
+
+      - name: Run Unit Tests
+        run: |
+          ctest --test-dir build-native --output-on-failure
 
   wasm-build:
     name: Build WebAssembly

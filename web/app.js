@@ -64,13 +64,12 @@ async function initialize() {
 // Utilities
 function getPriorities() {
     return {
-        none: Module?.Priority?.None,
-        low: Module?.Priority?.Low,
-        medium: Module?.Priority?.Medium,
-        high: Module?.Priority?.High
+        none: Module.Priority.None,
+        low: Module.Priority.Low,
+        medium: Module.Priority.Medium,
+        high: Module.Priority.High
     };
 }
-const priorities = getPriorities();
 
 function parseId(value) {
     if (!/^\d+$/.test(value)) {
@@ -82,7 +81,7 @@ function parseId(value) {
 
 function priorityName(priority) {
     const names = ["none", "low", "medium", "high"];
-    return names[Number(priority)] ?? "none";
+    return names[priority?.value] ?? "none";
 }
 
 // Command processor (JS smoke test)
@@ -93,6 +92,8 @@ function executeCommand(command) {
         return;
 
     print(`taskshell > ${trimmed}`, "muted");
+
+    const priorities = getPriorities();
 
     const [action, ...args] = trimmed.split(/\s+/);
 
@@ -198,7 +199,7 @@ function executeCommand(command) {
                 throw new Error("Priority must be none, low, medium, or high.");
             }
 
-            if (manager.setPriority(id, priorities[level])) {
+            if (manager.setPriority(BigInt(id), priorities[level])) {
                 print(`Task #${id} priority changed to ${level}.`, "success");
             }
             else {

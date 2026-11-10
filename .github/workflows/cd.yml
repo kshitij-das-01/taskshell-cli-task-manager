@@ -23,7 +23,7 @@ jobs:
     name: Deploy to Github Pages
     runs-on: ubuntu-latest
 
-    if: github.event.workflow_run.conclusio == 'success'
+    if: github.event.workflow_run.conclusion == 'success'
 
     environment:
       name: github-pages
